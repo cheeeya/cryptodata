@@ -1,1 +1,1 @@
-# Cryptodata - a visual guide to cryptocurrency
+# Cryptodata - A visual guide to cryptocurrency
