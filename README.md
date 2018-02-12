@@ -29,7 +29,7 @@ This project will be implemented with the following technologies:
 #### Over the weekend
 - [x] research cryptocurrency
 - [x] research javascript libraries for visualizing data
-- [x] setup api keys
+- [x] research crypto api's
 #### Day 1
 - [ ] setup javascript project
 - [ ] learn how connect api data with project
