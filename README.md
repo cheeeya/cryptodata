@@ -15,4 +15,4 @@ In Cryptodata, users will be able to
 
 ## Wireframes
 
-
+[[https://github.com/cheeeya/cryptodata/blob/master/cryptodata%20wireframe.png|alt=wireframe]]
