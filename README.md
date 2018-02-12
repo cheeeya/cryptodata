@@ -23,7 +23,7 @@ This project will be implemented with the following technologies:
 - vanilla javascript for overall structure
 - highcharts.js for live visualization of data
 - cryptocompare API for market data
-- blockchain info API for live transaction data
+- blockchain.info API for live transaction data
 
 ### Implementation Timeline
 #### Over the weekend
