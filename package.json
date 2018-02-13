@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "express": "^4.15.3",
+    "highcharts": "^6.0.6",
     "node-fetch": "^1.7.3",
     "webpack": "^3.4.1"
   },
