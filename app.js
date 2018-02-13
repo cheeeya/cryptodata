@@ -12,9 +12,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'))
 })
 
-app.get('/fighters', (req, res) => {
+app.get('/bitcoin', (req, res) => {
   let results
-  fetch('http://ufc-data-api.ufc.com//api/v1/us/fighters')
+  fetch('https://blockchain.info/ticker')
     .then(function(response) {
         return response.text();
     }).then(function(body) {
@@ -25,6 +25,20 @@ app.get('/fighters', (req, res) => {
         res.send(results)
     });
 
+})
+
+app.get('/coinlist', (req, res) => {
+  let results
+  fetch('https://min-api.cryptocompare.com/data/all/coinlist')
+    .then(function(response) {
+      return response.text();
+    }).then(function(body) {
+      results = JSON.parse(body)
+        console.log(typeof body);
+        console.log(body.length);
+        console.log(JSON.parse(body)[0]);
+        res.send(results)
+    });
 })
 
 app.listen(PORT, () => {
