@@ -20,10 +20,11 @@ This app will use a single screen split up into a sidebar with a brief overview 
 
 ### Architecture and Technologies
 This project will be implemented with the following technologies:
-- vanilla javascript for overall structure
-- highcharts.js for live visualization of data
-- cryptocompare API for market data
-- blockchain.info API for live transaction data
+- vanilla `javascript` for overall structure
+- `highcharts.js` for live visualization of data
+- a `Node` backend for processing API requests
+- `cryptocompare API` for market data
+- `blockchain.info API` for live transaction data
 
 ### Implementation Timeline
 #### Over the weekend
@@ -31,13 +32,13 @@ This project will be implemented with the following technologies:
 - [x] research javascript libraries for visualizing data
 - [x] research crypto api's
 #### Day 1
-- [ ] setup javascript project
-- [ ] learn how connect api data with project
-- [ ] write info secton
+- [ ] setup javascript project and node backend
+- [ ] process api requests with backend
 #### Day 2
 - [ ] implement highcharts
 - [ ] create basic graphs
 #### Day 3
-- [ ] render api data through highcharts
+- [ ] render api data through `highcharts.js`
 #### Day 4
+- [ ] write info section
 - [ ] final touches to structure and styling
