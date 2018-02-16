@@ -3,7 +3,7 @@ const app = express();
 // const http = require('http').Server(app)
 const path = require('path');
 const fetch = require('node-fetch');
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const _ = require('lodash');
 
 app.use(express.static('public'));
