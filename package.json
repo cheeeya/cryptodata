@@ -12,7 +12,8 @@
   "scripts": {
     "build": "webpack --watch",
     "start": "node app.js",
-    "start:debug": "DEBUG=* node app.js"
+    "start:debug": "DEBUG=* node app.js",
+    "postinstall": "webpack"
   },
   "dependencies": {
     "express": "^4.15.3",
