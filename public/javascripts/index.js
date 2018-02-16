@@ -100,19 +100,19 @@ const updateTable = () => {
     let cells = currentRow.children;
     for (let j = 0; j < values.length; j++) {
       let inner = values[j];
-      let style = "";
+      let color = "";
       if (j > 0) {
         inner = format(values[j], j);
       }
       if (j === 3) {
         if (inner[0] === "-") {
-          style = "color:red";
+          color = "red";
         } else {
           inner = `+${inner}`;
-          style = "color:green";
+          color = "green";
         }
       }
-      cells[j].setAttribute("style", style);
+      cells[j].style.color = color;
       cells[j].innerHTML = inner;
     }
   }
@@ -211,12 +211,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let infoPanel = document.getElementById("about-panel");
     let mainEl = document.getElementsByTagName("main")[0];
     if (panelHidden) {
-      infoPanel.removeAttribute("class");
+      infoPanel.setAttribute("class", "out");
       toggleAboutBtn.removeAttribute("style");
       panelHidden = false;
     } else {
-      infoPanel.setAttribute("class", "hidden");
-      toggleAboutBtn.setAttribute("style", "transform: rotate(180deg); left: 0px;")
+      infoPanel.setAttribute("class", "in");
+      toggleAboutBtn.style = "transform: rotate(180deg); left: 0;";
       panelHidden = true;
     }
   });
