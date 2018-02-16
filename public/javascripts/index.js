@@ -108,6 +108,7 @@ const updateTable = () => {
         if (inner[0] === "-") {
           style = "color:red";
         } else {
+          inner = `+${inner}`;
           style = "color:green";
         }
       }

@@ -78,9 +78,13 @@ tr:first-of-type {
 }
 
 .price-td, .cap-td, .cap-th, .price-th, .change-td {
+  font-family: monospace;
   text-align: right;
   padding-right: 15px;
   font-feature-settings: "tnum" 1;
+  -webkit-font-feature-settings: "tnum" 1;
+  -moz-font-feature-settings: "tnum" 1;
+  -ms-font-feature-settings: "tnum" 1;
 }
 
 .price-th {
