@@ -1,5 +1,6 @@
-html {
-
+h1 {
+  font-size: 36px;
+  text-align: center;
 }
 
 body {
@@ -8,19 +9,20 @@ body {
 
 .main {
   display: block;
-  margin-left: 20vw;
+  margin-top: 30px;
+  margin-left: 300px;
 }
 
-.about {
+#about-panel {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 20vw;
+  width: 300px;;
   text-align: center;
   color: white;
   background: black;
-  padding: 20px 10px;
+  padding: 20px 25px;
 }
 
 #chart-section {
@@ -107,4 +109,30 @@ tr:first-of-type {
 
 .highcharts-title {
   font-weight: 700;
+}
+
+#toggle-panel-button {
+  position: fixed;
+  left: 275px;
+  color: #f2f2f2;
+  z-index: 10;
+  font-size: 30px;
+  height: 100%;
+  padding: 0 5px;
+  opacity: 0;
+  background: black;
+}
+
+#toggle-panel-button:hover {
+  opacity: 1;
+  outline: none;
+}
+
+#about-panel:hover~#toggle-panel-button {
+  opacity: 1;
+  outline: none;
+}
+
+.hidden {
+  display: none;
 }

@@ -8,6 +8,8 @@ let lastTablePage = 0;
 const numRows = 5;
 let lastCoin = "BTC";
 let removeHandleArray = [];
+let panelHidden = false;
+
 
 const createChart = (coin, data) => {
   Highcharts.stockChart('chart-section', {
@@ -190,5 +192,23 @@ document.addEventListener('DOMContentLoaded', () => {
     url: "/coinlist"
   }).then(d => {
     initializeTable(d);
+  });
+
+  let toggleAboutBtn = document.getElementById("toggle-panel-button");
+  toggleAboutBtn.addEventListener("click", () => {
+    let infoPanel = document.getElementById("about-panel");
+    let mainEl = document.getElementsByTagName("main")[0];
+    mainEl.setAttribute("style", "background: green");
+    if (panelHidden) {
+      infoPanel.removeAttribute("class");
+      toggleAboutBtn.removeAttribute("style");
+      mainEl.removeAttribute("style");
+      panelHidden = false;
+    } else {
+      infoPanel.setAttribute("class", "hidden");
+      toggleAboutBtn.setAttribute("style", "transform: rotate(180deg); left: 0px;")
+      mainEl.setAttribute("style", "margin-left: 20vw");
+      panelHidden = true;
+    }
   });
 });
