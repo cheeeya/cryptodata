@@ -11,8 +11,13 @@ In Cryptodata, users will be able to
 - [x] choose cryptocoins to follow
 - [x] see market trends of various cryptocoins
 <<<<<<< HEAD
+<<<<<<< HEAD
 - [x] toggle between represntation of trends from the past hour, day, month, year, and all time
 - [ ] see live websocket data of transactions
+=======
+- [ ] toggle between represntation of trends from the past hour, day, month, year, and all time
+- [ ] see live websocket data of transactions 
+>>>>>>> c1fcf62b2b6f5195a01f2c0f1482a53be70ee95a
 =======
 - [ ] toggle between represntation of trends from the past hour, day, month, year, and all time
 - [ ] see live websocket data of transactions 
