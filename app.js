@@ -13,10 +13,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
-app.get('/coins/:coin', (req, res) => {
+app.get('/coins/:coin/:time', (req, res) => {
   let results;
   let coin = req.params.coin;
-  fetch(`https://min-api.cryptocompare.com/data/histominute?fsym=${coin}&tsym=USD&limit=2000&aggregate=1&e=CCCAGG`)
+  let time = req.params.time;
+  fetch(`https://min-api.cryptocompare.com/data/histo${time}?fsym=${coin}&tsym=USD&limit=2000&aggregate=1&e=CCCAGG`)
     .then(function(response) {
         return response.text();
     }).then(function(body) {

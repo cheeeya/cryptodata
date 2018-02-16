@@ -127,12 +127,12 @@ tr:first-of-type {
   padding: 7px 10px;
 }
 
-.selected {
+[class*="selected"] {
   color: #437FAB;
   font-weight: 700;
 }
 
-.selected:hover {
+[class*="selected"]:hover {
   cursor: default;
 }
 
@@ -195,4 +195,32 @@ tr:first-of-type {
   height: 200px;
   margin-top: 50px;
   margin-left: 59px;
+}
+
+.chart-tabs {
+  margin-left: 30px;
+  display: flex;
+}
+
+.tab-button {
+  padding: 5px 10px;
+  border-bottom: 1px solid #ccc;
+  border-radius: 3px 3px 0 0;
+  margin-right: 5px;
+}
+
+.tab-button:hover {
+  border-color: black;
+}
+
+.selected-tab {
+  border-color: #437FAB;
+}
+
+.selected-tab:hover {
+  border-color: #437FAB;
+}
+
+.tab-button:focus {
+  outline: none;
 }
