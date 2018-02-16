@@ -10,7 +10,7 @@ In Cryptodata, users will be able to
 - [x] learn the basics of how cryptocurrency works
 - [x] choose cryptocoins to follow
 - [x] see market trends of various cryptocoins
-- [ ] toggle between represntation of trends from the past hour, day, month, year, and all time
+- [x] toggle between represntation of trends from the past hour, day, month, year, and all time
 - [ ] see live websocket data of transactions
 
 ### Wireframes
