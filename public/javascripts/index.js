@@ -86,7 +86,7 @@ const updateTable = () => {
   for (let i = 0; i < 5; i++) {
     let tableIndex = i + pageStartRows[currentTablePage];
     let coin = tableData[tableIndex];
-    let values = [coin.name, `$ ${coin.price_usd}`, `$ ${coin.market_cap_usd}`, `${coin.percent_change_24h} %`];
+    let values = [coin.name, coin.price_usd, coin.market_cap_usd, coin.percent_change_24h];
     if (removeHandleArray[i]) {
       removeHandleArray[i]();
     }
@@ -101,9 +101,10 @@ const updateTable = () => {
     for (let j = 0; j < values.length; j++) {
       let inner = values[j];
       let style = "";
-      if (j === 2) {
-        inner = formatCap(values[j]);
-      } else if (j === 3) {
+      if (j > 0) {
+        inner = format(values[j], j);
+      }
+      if (j === 3) {
         if (inner[0] === "-") {
           style = "color:red";
         } else {
@@ -174,9 +175,18 @@ const createPagination = () => {
   return pagination;
 }
 
-const formatCap = (num) => {
-  let string = numeral(num).format('$0.00 a');
-  return string.slice(0, string.length - 1).concat(string[string.length - 1].toUpperCase());
+const format = (num, col) => {
+  if (col === 1) {
+    if (num >= 10) {
+      return numeral(num).format('$0.00');
+    }
+    return numeral(num).format('$0.00[0000]')
+  } else if (col === 2) {
+    let string = numeral(num).format('$0.00 a');
+    return string.slice(0, string.length - 1).concat(string[string.length - 1].toUpperCase());
+  } else {
+    return numeral(num).format('0.00') + " %";
+  }
 }
 
 
@@ -198,16 +208,13 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleAboutBtn.addEventListener("click", () => {
     let infoPanel = document.getElementById("about-panel");
     let mainEl = document.getElementsByTagName("main")[0];
-    mainEl.setAttribute("style", "background: green");
     if (panelHidden) {
       infoPanel.removeAttribute("class");
       toggleAboutBtn.removeAttribute("style");
-      mainEl.removeAttribute("style");
       panelHidden = false;
     } else {
       infoPanel.setAttribute("class", "hidden");
       toggleAboutBtn.setAttribute("style", "transform: rotate(180deg); left: 0px;")
-      mainEl.setAttribute("style", "margin-left: 20vw");
       panelHidden = true;
     }
   });
