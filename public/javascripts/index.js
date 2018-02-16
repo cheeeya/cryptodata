@@ -8,10 +8,32 @@ let lastTablePage = 1;
 const numRows = 5;
 let lastCoin = "BTC";
 let removeHandleArray = [];
+let removeTabHandleArray = [];
 let panelHidden = false;
 
 
-const createChart = (coin, data) => {
+const createChart = (coin, data, daily) => {
+  let rangeSelector = {};
+  if (daily) {
+    rangeSelector = {
+      buttons: [{
+          type: 'hour',
+          count: 1,
+          text: '1h'
+      }, {
+          type: 'day',
+          count: 1,
+          text: '1D'
+      }],
+      selected: 1,
+      inputEnabled: false
+    }
+  } else {
+    rangeSelector = {
+      selected: 1,
+      inputEnabled: false
+    }
+  }
   Highcharts.stockChart('chart-section', {
       title: {
         text: `${coin} Price`
@@ -25,19 +47,7 @@ const createChart = (coin, data) => {
         enabled: true
       },
 
-      rangeSelector: {
-        buttons: [{
-            type: 'hour',
-            count: 1,
-            text: '1h'
-        }, {
-            type: 'day',
-            count: 1,
-            text: '1D'
-        }],
-        selected: 0,
-        inputEnabled: false
-      },
+      rangeSelector,
 
       series: [{
         name: `${coin}`,
@@ -61,6 +71,7 @@ const initializeTable = (data) => {
 
 const handleCoinSelect = (coinSym) => {
   return (e) => {
+    e.preventDefault();
     if (lastCoin !== coinSym) {
       let lastRow = document.getElementById(lastCoin);
       if (lastRow) {
@@ -72,10 +83,18 @@ const handleCoinSelect = (coinSym) => {
       if (coinSym === "MIOTA") {
         coinSym = "IOT";
       }
-      $.ajax({
-        method: 'GET',
-        url: `/coins/${coinSym}`
-      }).then(data => createChart(coinSym, data));
+      if (removeTabHandleArray) {
+        removeTabHandleArray[0]();
+        removeTabHandleArray[1]();
+      }
+      let dTab = document.getElementById("daily-tab");
+      let aTab = document.getElementById("all-tab");
+      setTabEventListener(coinSym);
+      if (dTab.getAttribute("class") === "selected-tab tab-button") {
+        return (minuteReq(coinSym));
+      } else {
+        return (allReq(coinSym));
+      }
     }
   }
 }
@@ -191,14 +210,53 @@ const format = (num, col) => {
   }
 }
 
-
-document.addEventListener('DOMContentLoaded', () => {
+const minuteReq = (coinSym) => (
   $.ajax({
     method: 'GET',
-    url: "/coins/BTC"
+    url: `/coins/${coinSym}/minute`
   }).then(data => {
-    createChart("BTC", data);
-  });
+    createChart(coinSym, data, true);
+  })
+);
+
+const allReq = (coinSym) => (
+  $.ajax({
+    method: 'GET',
+    url: `/coins/${coinSym}/day`
+  }).then(data => {
+    createChart(coinSym, data, false);
+  })
+);
+
+const setTabEventListener = (coinSym) => {
+  let dTab = document.getElementById("daily-tab");
+  let aTab = document.getElementById("all-tab");
+  let handleDaily = (e) => {
+    e.preventDefault();
+    dTab.setAttribute("class", "selected-tab tab-button");
+    dTab.setAttribute("disabled", "");
+    aTab.setAttribute("class", "tab-button");
+    aTab.removeAttribute("disabled");
+    return (minuteReq(coinSym));
+  };
+  let handleAll = (e) => {
+    e.preventDefault();
+    aTab.setAttribute("class", "selected-tab tab-button ");
+    aTab.setAttribute("disabled", "");
+    dTab.setAttribute("class", "tab-button");
+    dTab.removeAttribute("disabled");
+    return (allReq(coinSym));
+  }
+  dTab.addEventListener('click', handleDaily);
+  removeTabHandleArray[0] = () => dTab.removeEventListener('click', handleDaily);
+  aTab.addEventListener('click', handleAll);
+  removeTabHandleArray[1] = () => aTab.removeEventListener('click', handleAll);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  minuteReq("BTC");
+  setTabEventListener("BTC");
   $.ajax({
     method: 'GET',
     url: "/coinlist"
