@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const fetch = require('node-fetch');
 const PORT = 8000;
+const _ = require('lodash');
 
 app.use(express.static('public'));
 
@@ -12,27 +13,19 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
-app.get('/bitcoin', (req, res) => {
+app.get('/coins/:coin', (req, res) => {
   let results;
-  fetch('https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=60&aggregate=24&e=CCCAGG')
+  let coin = req.params.coin;
+  fetch(`https://min-api.cryptocompare.com/data/histominute?fsym=${coin}&tsym=USD&limit=2000&aggregate=1&e=CCCAGG`)
     .then(function(response) {
         return response.text();
     }).then(function(body) {
-      results = JSON.parse(body)
-        console.log(typeof body);
-        console.log(body.length);
-        console.log(JSON.parse(body)[0]);
+      results = JSON.parse(body);
         let data = results.Data.map(day => {
-          let time = day.time;
+          let time = (day.time - 28800) * 1000;
           let close = day.close;
           let day2 = { time, close };
           return Object.values(day2);
-
-          //other implementation;
-          // let dayArr = [];
-          // dayArr.push(day.time);
-          // dayArr.push(day.close);
-          // return dayArr;
         });
         res.send(data);
     });
@@ -40,15 +33,12 @@ app.get('/bitcoin', (req, res) => {
 });
 
 app.get('/coinlist', (req, res) => {
-  let results
-  fetch('https://min-api.cryptocompare.com/data/all/coinlist')
+  let results;
+  fetch('https://api.coinmarketcap.com/v1/ticker/')
     .then(function(response) {
       return response.text();
     }).then(function(body) {
       results = JSON.parse(body);
-        console.log(typeof body);
-        console.log(body.length);
-        console.log(JSON.parse(body)[0]);
         res.send(results);
     });
 });
