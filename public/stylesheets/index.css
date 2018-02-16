@@ -1,0 +1,110 @@
+html {
+
+}
+
+body {
+  display: flex;
+}
+
+.main {
+  display: block;
+  margin-left: 20vw;
+}
+
+.about {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 20vw;
+  text-align: center;
+  color: white;
+  background: black;
+  padding: 20px 10px;
+}
+
+#chart-section {
+  width: 739px;
+  margin: 0 0 30px 22px;
+}
+
+#table-section {
+  margin: 30px;
+  display: block;
+}
+
+#coin-table {
+  border: 2px solid black;
+  width: 720px;
+}
+
+tr {
+  overflow: hidden;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: center;
+  overflow: hidden;
+}
+
+th {
+  font-size: 24px;
+  font-weight: 700;
+  height: 50px;
+  vertical-align: middle;
+  border-color: white;
+}
+
+td {
+  font-size: 20px;
+  height: 45px;
+  vertical-align: middle;
+}
+
+tr:hover {
+  cursor: pointer;
+}
+
+tr:first-of-type {
+  cursor: default;
+}
+
+.change-td {
+  width: 150px;
+}
+
+.name-td, .price-td, .cap-td {
+  width: 190px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-around;
+}
+
+.page-button {
+  padding: 7px 10px;
+}
+
+.change-th {
+  font-size: 18px;
+}
+
+.selected {
+  color: #437FAB;
+  font-weight: 700;
+}
+
+.selected:hover {
+  cursor: default;
+}
+
+.header-row {
+  background: black;
+  color: white;
+}
+
+.highcharts-title {
+  font-weight: 700;
+}
