@@ -10,8 +10,13 @@ In Cryptodata, users will be able to
 - [x] learn the basics of how cryptocurrency works
 - [x] choose cryptocoins to follow
 - [x] see market trends of various cryptocoins
+<<<<<<< HEAD
 - [x] toggle between represntation of trends from the past hour, day, month, year, and all time
 - [ ] see live websocket data of transactions
+=======
+- [ ] toggle between represntation of trends from the past hour, day, month, year, and all time
+- [ ] see live websocket data of transactions 
+>>>>>>> c1fcf62b2b6f5195a01f2c0f1482a53be70ee95a
 
 ### Wireframes
 This app will use a single screen split up into a sidebar with a brief overview on cryptocurrencies and a main section with several charts showing market trends for the different cryptocoins. Users will be able to toggle the display to show data on different crypto coins, including all the live transactions for that currency.
