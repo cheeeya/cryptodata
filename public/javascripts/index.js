@@ -3,8 +3,8 @@ const fetch = require('node-fetch');
 const numeral = require('numeral');
 let tableData = [];
 let pageStartRows = [];
-let currentTablePage = 0;
-let lastTablePage = 0;
+let currentTablePage = 1;
+let lastTablePage = 1;
 const numRows = 5;
 let lastCoin = "BTC";
 let removeHandleArray = [];
@@ -52,7 +52,7 @@ const createChart = (coin, data) => {
 
 const initializeTable = (data) => {
   tableData = data;
-  for ( let i = 0; i < Math.ceil(tableData.length / numRows); i++) {
+  for ( let i = 0; i < 100 / numRows; i++) {
     pageStartRows.push(i * numRows);
   }
   createTable(numRows);
@@ -83,8 +83,8 @@ const handleCoinSelect = (coinSym) => {
 const updateTable = () => {
   let allRows = document.getElementsByTagName("tr");
 
-  for (let i = 0; i < 5; i++) {
-    let tableIndex = i + pageStartRows[currentTablePage];
+  for (let i = 0; i < numRows; i++) {
+    let tableIndex = i + pageStartRows[currentTablePage - 1];
     let coin = tableData[tableIndex];
     let values = [coin.name, coin.price_usd, coin.market_cap_usd, coin.percent_change_24h];
     if (removeHandleArray[i]) {
@@ -151,24 +151,25 @@ const createTable = (numRows) => {
 const createPagination = () => {
   let pagination = document.createElement("div");
   pagination.setAttribute("class", "pagination");
-  for (let i = 0; i < pageStartRows.length; i++) {
+  for (let i = 0; i < pageStartRows.length + 0; i++) {
     let pageButton = document.createElement("button");
-    pageButton.setAttribute("id", `page${i}`);
+    pageButton.setAttribute("id", `page${i + 1}`);
     if (i === 0) {
       pageButton.setAttribute("class", "page-button selected");
       pageButton.setAttribute("disabled", "");
     } else {
       pageButton.setAttribute("class", "page-button");
     }
-    pageButton.innerHTML = i;
+    pageButton.innerHTML = i + 1;
     pageButton.addEventListener("click", () => {
       let lastButton = document.getElementById(`page${lastTablePage}`);
       lastButton.removeAttribute("disabled");
       lastButton.setAttribute("class", "page-button");
       pageButton.setAttribute("disabled", "");
       pageButton.setAttribute("class", "page-button selected");
-      currentTablePage = i;
-      lastTablePage = i;
+      let page = pageButton.innerHTML;
+      currentTablePage = page;
+      lastTablePage = page;
       updateTable();
     })
     pagination.appendChild(pageButton);
