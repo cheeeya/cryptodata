@@ -84,6 +84,7 @@ td {
 
 tr:hover {
   cursor: pointer;
+  background-color: #f5f5f5;
 }
 
 tr:first-of-type {
@@ -139,6 +140,10 @@ tr:first-of-type {
 .header-row {
   background: black;
   color: white;
+}
+
+.header-row:hover {
+  background: black;
 }
 
 .highcharts-title {
