@@ -84,7 +84,7 @@ td {
 
 tr:hover {
   cursor: pointer;
-  background-color: #f5f5f5;
+  background-color: #efefef;
 }
 
 tr:first-of-type {
