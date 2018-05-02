@@ -2,7 +2,8 @@ const Highcharts = require('highcharts/highstock');
 const fetch = require('node-fetch');
 const numeral = require('numeral');
 let tableData = [], priceData = [], changeData = [], alphabeticalData = [];
-let currentTable = tableData;
+let currentTable = [];
+let currentTableName = "cap";
 let pageStartRows = [];
 let currentTablePage = 1;
 let lastTablePage = 1;
@@ -66,10 +67,12 @@ const initializeTable = (data) => {
   priceData = data.slice(0).sort((a, b) => b.price_usd - a.price_usd);
   changeData = data.slice(0).sort((a,b) => b.percent_change_24h - a.percent_change_24h);
   alphabeticalData = data.slice(0).sort((a, b) => {
-    if (a.name < b.name) return -1;
-    if (a.name > b.name) return 1;
+    let aName = a.name.toLowerCase(), bName = b.name.toLowerCase();
+    if (aName < bName) return -1;
+    if (aName > bName) return 1;
     return 0;
   });
+  currentTable = tableData;
   for ( let i = 0; i < 100 / numRows; i++) {
     pageStartRows.push(i * numRows);
   }
@@ -109,7 +112,6 @@ const handleCoinSelect = (coinSym) => {
 
 const updateTable = (data) => {
   let allRows = document.getElementsByTagName("tr");
-
   for (let i = 0; i < numRows; i++) {
     let tableIndex = i + pageStartRows[currentTablePage - 1];
     let coin = data[tableIndex];
@@ -159,18 +161,18 @@ const createTable = (numRows) => {
   for (let i = 0; i < headers.length; i++) {
     let header = document.createElement("th");
     header.setAttribute("class", `${classNames[i]}-th`);
-    header.textContent = headers[i];
+    let headerDiv = document.createElement("div");
+    headerDiv.setAttribute("class", `header-div ${classNames[i]}-header-div`);
+    headerDiv.textContent = headers[i];
     let sort = document.createElement("div");
-    sort.setAttribute("class", `${classNames[i]}-sort th-sort`);
-    let sortUp = document.createElement("div");
-    sortUp.setAttribute("class", "sort-up");
-    sortUp.setAttribute("id", `${classNames[i]}-sort-up`)
-    let sortDown = document.createElement("div");
-    sortDown.setAttribute("class", "sort-down");
-    sortDown.setAttribute("id", `${classNames[i]}-sort-down`)
-    sort.appendChild(sortUp);
-    sort.appendChild(sortDown);
-    header.appendChild(sort);
+    sort.setAttribute("class", `th-sort`);
+    sort.setAttribute("id", `${classNames[i]}-sort`);
+    let sortCaret = document.createElement("div");
+    sortCaret.setAttribute("class", "sort-down");
+    sortCaret.setAttribute("id", `${classNames[i]}-sort-caret`);
+    sort.appendChild(sortCaret);
+    headerDiv.appendChild(sort);
+    header.appendChild(headerDiv);
     headRow.appendChild(header);
     header.addEventListener("click", sortTable(classNames[i]));
   }
@@ -186,6 +188,7 @@ const createTable = (numRows) => {
   }
   let tableSection = document.getElementById("table-section");
   tableSection.appendChild(coinTable);
+  document.getElementById("cap-sort").setAttribute("style", "visibility: visible;");
   tableSection.appendChild(createPagination());
 }
 
@@ -254,7 +257,18 @@ const sortTable = (attribute) => {
 
   return (e) => {
     e.preventDefault();
-    if (attribute === "price") {
+    let currentHeaderSort = document.getElementById(`${currentTableName}-sort`);
+    let nextheaderSort = document.getElementById(`${attribute}-sort`);
+    currentHeaderSort.setAttribute("style", "visibility: hidden;");
+    if (currentTableName === attribute) {
+      currentTable.reverse();
+      let caretEl = document.getElementById(`${attribute}-sort-caret`);
+      if (caretEl.className === "sort-down") {
+        caretEl.setAttribute("class", "sort-up");
+      } else {
+        caretEl.setAttribute("class", "sort-down");
+      }
+    } else if (attribute === "price") {
       currentTable = priceData;
     } else if (attribute === "cap") {
       currentTable = tableData;
@@ -263,6 +277,8 @@ const sortTable = (attribute) => {
     } else if (attribute === "name") {
       currentTable = alphabeticalData;
     }
+    currentTableName = attribute;
+    nextheaderSort.setAttribute("style", "visibility: visible;");
     updateTable(currentTable);
   }
 }
