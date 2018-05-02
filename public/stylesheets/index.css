@@ -229,3 +229,24 @@ tr:first-of-type {
 .tab-button:focus {
   outline: none;
 }
+
+.th-sort {
+  width: 12px;
+}
+
+.sort-up {
+  height: 7px;
+  width: 12px;
+  margin-bottom: 10px;
+  background-image: url("https://res.cloudinary.com/elitebeats/image/upload/v1525243827/sort-up-white_yerfug.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.sort-down {
+  height: 7px;
+  width: 12px;
+  background-image: url("https://res.cloudinary.com/elitebeats/image/upload/v1525243823/sort-down-white_kkmffr.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}

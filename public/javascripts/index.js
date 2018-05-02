@@ -153,24 +153,26 @@ const createTable = (numRows) => {
   let coinTable = document.createElement("table");
   coinTable.setAttribute("id", "coin-table")
   let headers = ["Name", "Price", "Market Cap", "24 Hr Change"];
-  let classNames = ["name-th", "price-th", "cap-th", "change-th"];
+  let classNames = ["name", "price", "cap", "change"];
   let headRow = document.createElement("tr");
   headRow.setAttribute("class", "header-row");
   for (let i = 0; i < headers.length; i++) {
     let header = document.createElement("th");
-    header.setAttribute("class", classNames[i]);
+    header.setAttribute("class", `${classNames[i]}-th`);
     header.textContent = headers[i];
     let sort = document.createElement("div");
-    sort.setAttribute("class", `${classNames[i]}-sort`);
+    sort.setAttribute("class", `${classNames[i]}-sort th-sort`);
     let sortUp = document.createElement("div");
     sortUp.setAttribute("class", "sort-up");
+    sortUp.setAttribute("id", `${classNames[i]}-sort-up`)
     let sortDown = document.createElement("div");
     sortDown.setAttribute("class", "sort-down");
+    sortDown.setAttribute("id", `${classNames[i]}-sort-down`)
     sort.appendChild(sortUp);
     sort.appendChild(sortDown);
     header.appendChild(sort);
     headRow.appendChild(header);
-    header.addEventListener("click", sortTable(headers[i]));
+    header.addEventListener("click", sortTable(classNames[i]));
   }
   coinTable.appendChild(headRow);
   for (let i = 0; i < numRows; i++) {
@@ -252,13 +254,13 @@ const sortTable = (attribute) => {
 
   return (e) => {
     e.preventDefault();
-    if (attribute === "Price") {
+    if (attribute === "price") {
       currentTable = priceData;
-    } else if (attribute === "Market Cap") {
+    } else if (attribute === "cap") {
       currentTable = tableData;
-    } else if (attribute === "24 Hr Change") {
+    } else if (attribute === "change") {
       currentTable = changeData;
-    } else if (attribute === "Name") {
+    } else if (attribute === "name") {
       currentTable = alphabeticalData;
     }
     updateTable(currentTable);
