@@ -35,7 +35,7 @@ app.get('/coins/:coin/:time', (req, res) => {
 
 app.get('/coinlist', (req, res) => {
   let results;
-  fetch('https://api.coinmarketcap.com/v1/ticker/')
+  fetch('https://api.coinmarketcap.com/v2/ticker/')
     .then(function(response) {
       return response.text();
     }).then(function(body) {

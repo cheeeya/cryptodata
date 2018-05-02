@@ -1,7 +1,8 @@
 const Highcharts = require('highcharts/highstock');
 const fetch = require('node-fetch');
 const numeral = require('numeral');
-let tableData = [];
+let tableData = [], priceData = [], changeData = [], alphabeticalData = [];
+let currentTable = tableData;
 let pageStartRows = [];
 let currentTablePage = 1;
 let lastTablePage = 1;
@@ -62,11 +63,18 @@ const createChart = (coin, data, daily) => {
 
 const initializeTable = (data) => {
   tableData = data;
+  priceData = data.slice(0).sort((a, b) => b.price_usd - a.price_usd);
+  changeData = data.slice(0).sort((a,b) => b.percent_change_24h - a.percent_change_24h);
+  alphabeticalData = data.slice(0).sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
   for ( let i = 0; i < 100 / numRows; i++) {
     pageStartRows.push(i * numRows);
   }
   createTable(numRows);
-  updateTable();
+  updateTable(tableData);
 }
 
 const handleCoinSelect = (coinSym) => {
@@ -99,12 +107,12 @@ const handleCoinSelect = (coinSym) => {
   }
 }
 
-const updateTable = () => {
+const updateTable = (data) => {
   let allRows = document.getElementsByTagName("tr");
 
   for (let i = 0; i < numRows; i++) {
     let tableIndex = i + pageStartRows[currentTablePage - 1];
-    let coin = tableData[tableIndex];
+    let coin = data[tableIndex];
     let values = [coin.name, coin.price_usd, coin.market_cap_usd, coin.percent_change_24h];
     if (removeHandleArray[i]) {
       removeHandleArray[i]();
@@ -149,8 +157,20 @@ const createTable = (numRows) => {
   let headRow = document.createElement("tr");
   headRow.setAttribute("class", "header-row");
   for (let i = 0; i < headers.length; i++) {
-    let header = `<th class=${classNames[i]}>${headers[i]}</th>`;
-    headRow.innerHTML += header;
+    let header = document.createElement("th");
+    header.setAttribute("class", classNames[i]);
+    header.textContent = headers[i];
+    let sort = document.createElement("div");
+    sort.setAttribute("class", `${classNames[i]}-sort`);
+    let sortUp = document.createElement("div");
+    sortUp.setAttribute("class", "sort-up");
+    let sortDown = document.createElement("div");
+    sortDown.setAttribute("class", "sort-down");
+    sort.appendChild(sortUp);
+    sort.appendChild(sortDown);
+    header.appendChild(sort);
+    headRow.appendChild(header);
+    header.addEventListener("click", sortTable(headers[i]));
   }
   coinTable.appendChild(headRow);
   for (let i = 0; i < numRows; i++) {
@@ -189,7 +209,7 @@ const createPagination = () => {
       let page = pageButton.innerHTML;
       currentTablePage = page;
       lastTablePage = page;
-      updateTable();
+      updateTable(currentTable);
     })
     pagination.appendChild(pageButton);
   }
@@ -227,6 +247,23 @@ const allReq = (coinSym) => (
     createChart(coinSym, data, false);
   })
 );
+
+const sortTable = (attribute) => {
+
+  return (e) => {
+    e.preventDefault();
+    if (attribute === "Price") {
+      currentTable = priceData;
+    } else if (attribute === "Market Cap") {
+      currentTable = tableData;
+    } else if (attribute === "24 Hr Change") {
+      currentTable = changeData;
+    } else if (attribute === "Name") {
+      currentTable = alphabeticalData;
+    }
+    updateTable(currentTable);
+  }
+}
 
 const setTabEventListener = (coinSym) => {
   let dTab = document.getElementById("daily-tab");
