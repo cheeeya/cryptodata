@@ -1,7 +1,12 @@
 const Highcharts = require('highcharts/highstock');
 const fetch = require('node-fetch');
 const numeral = require('numeral');
-let tableData = [], priceData = [], changeData = [], alphabeticalData = [];
+const dataTables = {
+  cap: [],
+  change: [],
+  name: [],
+  price: []
+};
 let currentTable = [];
 let currentTableName = "cap";
 let pageStartRows = [];
@@ -63,21 +68,21 @@ const createChart = (coin, data, daily) => {
 }
 
 const initializeTable = (data) => {
-  tableData = data;
-  priceData = data.slice(0).sort((a, b) => b.price_usd - a.price_usd);
-  changeData = data.slice(0).sort((a,b) => b.percent_change_24h - a.percent_change_24h);
-  alphabeticalData = data.slice(0).sort((a, b) => {
+  dataTables.cap = data.slice(0);
+  dataTables.change = data.slice(0).sort((a,b) => b.percent_change_24h - a.percent_change_24h);
+  dataTables.name = data.slice(0).sort((a, b) => {
     let aName = a.name.toLowerCase(), bName = b.name.toLowerCase();
     if (aName < bName) return -1;
     if (aName > bName) return 1;
     return 0;
   });
-  currentTable = tableData;
+  dataTables.price = data.slice(0).sort((a, b) => b.price_usd - a.price_usd);
+  currentTable = dataTables.cap;
   for ( let i = 0; i < 100 / numRows; i++) {
     pageStartRows.push(i * numRows);
   }
   createTable(numRows);
-  updateTable(tableData);
+  updateTable(dataTables.cap);
 }
 
 const handleCoinSelect = (coinSym) => {
@@ -258,7 +263,7 @@ const sortTable = (attribute) => {
   return (e) => {
     e.preventDefault();
     let currentHeaderSort = document.getElementById(`${currentTableName}-sort`);
-    let nextheaderSort = document.getElementById(`${attribute}-sort`);
+    let nextHeaderSort = document.getElementById(`${attribute}-sort`);
     currentHeaderSort.setAttribute("style", "visibility: hidden;");
     if (currentTableName === attribute) {
       currentTable.reverse();
@@ -268,17 +273,11 @@ const sortTable = (attribute) => {
       } else {
         caretEl.setAttribute("class", "sort-down");
       }
-    } else if (attribute === "price") {
-      currentTable = priceData;
-    } else if (attribute === "cap") {
-      currentTable = tableData;
-    } else if (attribute === "change") {
-      currentTable = changeData;
-    } else if (attribute === "name") {
-      currentTable = alphabeticalData;
+    } else {
+      currentTable = dataTables[attribute];
     }
     currentTableName = attribute;
-    nextheaderSort.setAttribute("style", "visibility: visible;");
+    nextHeaderSort.setAttribute("style", "visibility: visible;");
     updateTable(currentTable);
   }
 }
